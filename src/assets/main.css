@@ -1,35 +1,32 @@
-@import './base.css';
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-
-  font-weight: normal;
-}
-
-a,
-.green {
-  text-decoration: none;
-  color: hsla(160, 100%, 37%, 1);
-  transition: 0.4s;
-}
-
-@media (hover: hover) {
-  a:hover {
-    background-color: hsla(160, 100%, 37%, 0.2);
+@layer base {
+  :root {
+    --clr-hover: #00000015;
+    --clr-focus: #000000;
+    --clr-text-100: #D9D9DE;
+    --clr-text-200: #838C9E;
+    --clr-main-100: #826EF2;
+    --clr-main-200: #645FC6;
+    --clr-bg-100: #2C2C38;
+    --clr-bg-200: #242430;
+    --clr-bg-300: #21212D;
+    --clr-accent-100: #66E1AC;
+    --clr-accent-100: #48C3E7;
   }
 }
 
-@media (min-width: 1024px) {
-  body {
-    display: flex;
-    place-items: center;
-  }
-
-  #app {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    padding: 0 2rem;
-  }
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/fonts/DMSans-VariableFont_opsz,wght.ttf') format('truetype-variations');
+  font-weight: 100 1000;
+  font-style: normal;
+}
+@font-face {
+  font-family: 'DM Sans';
+  src: url('/fonts/DMSans-Italic-VariableFont_opsz,wght.ttf') format('truetype-variations');
+  font-weight: 100 1000;
+  font-style: italic;
 }
