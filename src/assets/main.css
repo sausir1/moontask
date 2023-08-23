@@ -1,21 +1,9 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-
+@import url('./theme.css');
 @layer base {
-  :root {
-    --clr-hover: #00000015;
-    --clr-focus: #000000;
-    --clr-text-100: #D9D9DE;
-    --clr-text-200: #838C9E;
-    --clr-main-100: #826EF2;
-    --clr-main-200: #645FC6;
-    --clr-bg-100: #2C2C38;
-    --clr-bg-200: #242430;
-    --clr-bg-300: #21212D;
-    --clr-accent-100: #66E1AC;
-    --clr-accent-100: #48C3E7;
-  }
+
 }
 
 @font-face {
