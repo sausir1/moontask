@@ -1,20 +1,31 @@
 <script setup lang="ts">
 import { RouterLink, RouterView } from 'vue-router'
+import IconLogo from './components/icons/IconLogo.vue'
+import { generateMenu } from './utils/file-based-menu'
+const routes = generateMenu()
 </script>
 
 <template>
-  <main class="font-sans m-grid text-theme-text-100">
-    <div
-      class="col-span-1 row-span-full bg-theme-bg-100 border-r border-r-white/10"
+  <main class="font-sans m-grid bg-ds-goku">
+    <nav
+      class="bg-ds-gohan col-span-1 row-span-full border-r border-ds-beerus px-6 py-4"
     >
-      this is menu
-    </div>
-    <div
-      class="col-start-2 row-span-1 bg-theme-bg-100 border-b border-b-white/10"
-    >
+      <header class="flex items-center drop-shadow-lg mb-10">
+        <IconLogo class="w-12 h-12 text-ds-piccolo" />
+        <h2 class="text-4xl font-semibold ml-2">MoonTask</h2>
+      </header>
+      <ul>
+        <li v-for="route in routes" :key="route.path">
+          <RouterLink :to="route.path">
+            {{ route.name }}
+          </RouterLink>
+        </li>
+      </ul>
+    </nav>
+    <div class="bg-ds-gohan col-start-2 row-span-1 border-b border-ds-beerus">
       This is header
     </div>
-    <div class="bg-theme-bg-300 p-4">
+    <div class="p-4">
       <RouterView />
     </div>
   </main>

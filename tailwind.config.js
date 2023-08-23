@@ -7,37 +7,27 @@ module.exports = {
         sans: 'DM Sans',
       },
       borderWidth: {
-        ds: {
-          s: 'var(--border-width)',
-          i: 'var(--border-i-width)',
-        },
+        'ds-s': 'var(--border-width)',
+        'ds-i': 'var(--border-i-width)',
       },
       borderRadius: {
-        ds: {
-          // Interactive elements
-          i: {
-            xs: 'var(--radius-i-xs)',
-            sm: 'var(--radius-i-sm)',
-            md: 'var(--radius-i-md)',
-          },
-          // Static elements
-          s: {
-            xs: 'var(--radius-s-xs)',
-            sm: 'var(--radius-s-sm)',
-            md: 'var(--radius-s-md)',
-            lg: 'var(--radius-s-lg)',
-          },
-        },
+        // Interactive elements
+        'ds-i-xs': 'var(--radius-i-xs)',
+        'ds-i-sm': 'var(--radius-i-sm)',
+        'ds-i-md': 'var(--radius-i-md)',
+        // Static elements
+        'ds-s-xs': 'var(--radius-s-xs)',
+        'ds-s-sm': 'var(--radius-s-sm)',
+        'ds-s-md': 'var(--radius-s-md)',
+        'ds-s-lg': 'var(--radius-s-lg)',
       },
-      boxShadow: {
-        ds: {
-          xs: 'var(--shadow-xs)',
-          sm: 'var(--shadow-sm)',
-          md: 'var(--shadow-md)',
-          lg: 'var(--shadow-lg)',
-          xl: 'var(--shadow-xl)',
-        },
-      },
+      // boxShadow: {
+      //   xs: 'var(--shadow-xs)',
+      //   sm: 'var(--shadow-sm)',
+      //   md: 'var(--shadow-md)',
+      //   lg: 'var(--shadow-lg)',
+      //   xl: 'var(--shadow-xl)',
+      // },
       colors: {
         ds: {
           piccolo: useOpacity('var(--piccolo)'),
@@ -87,5 +77,5 @@ module.exports = {
 }
 
 function useOpacity(input) {
-  return ({ opacityValue }) => `rgba(${input}, ${opacityValue ?? 1})`
+  return ({ opacityValue }) => `rgb(${input} / ${opacityValue ?? 1})`
 }
