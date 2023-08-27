@@ -3,6 +3,24 @@
 @tailwind components;
 @tailwind utilities;
 @layer base {
+  .ds-i-item {
+    @apply overflow-hidden outline-none relative transition-all duration-200 ease-in-out focus:outline-offset-1 focus:outline-ds-bulma;
+  }
+  .ds-i-item::after {
+    @apply transition-opacity duration-200 ease-in-out
+  }
+  .ds-i-item::after {
+    position: absolute;
+    content: ' ';
+    inset: 0;
+    background-color: theme('colors.ds.heles');
+    opacity: 0;
+    visibility: hidden;
+  }
+  .ds-i-item:is(:hover,:focus)::after {
+    visibility: visible;
+    opacity: 1;
+  }
 }
 
 @font-face {
