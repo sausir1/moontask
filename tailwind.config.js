@@ -1,3 +1,4 @@
+import plugin from 'tailwindcss/plugin'
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,vue}'],
@@ -73,7 +74,12 @@ module.exports = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    plugin(({ addVariant }) => {
+      addVariant('item-left', ['&[data-item-left="true"]'])
+      addVariant('item-right', ['&[data-item-right="true"]'])
+    }),
+  ],
 }
 
 function useOpacity(input) {
