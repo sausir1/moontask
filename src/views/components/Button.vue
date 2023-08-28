@@ -5,7 +5,13 @@
       <MButton class="mr-4" :color="color" :size="size">{{
         `${color}-${size}`
       }}</MButton>
+      <MButton class="mr-4" :color="color" :size="size" disabled>
+        {{ `${color}-${size}` }}</MButton
+      >
     </template>
+  </div>
+  <div class="w-72 border">
+    <MButton block>Test</MButton>
   </div>
 </template>
 
