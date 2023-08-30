@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<style>
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    font-family: sans-serif;
+  }
+  .btn {
+    all: unset;
+    padding-inline: 1rem;
+    padding-block: 0.4rem;
+    border-radius: 0.3rem;
+    font-weight: 400;
+    background-color: #5400a6;
+    color: white;
+  }
+  .container {
+    padding: 2rem 1rem;
+    position: relative;
+  }
+  .console {
+    cursor: grab;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #404040;
+    color: antiquewhite;
+    min-height: 2rem;
+    min-width: 20rem;
+    padding: 1rem;
+    border-radius: 0.5rem;
+  }
+  .popover {
+    position: absolute;
+    background: white;
+    padding: 0.75rem 0.5rem;
+    border-radius: 0.25rem;
+    box-shadow: 4px 4px 15px 1px #404040;
+  }
+  .box {
+    height: 100px;
+    width: 100px;
+    background-color: brown;
+  }
+  mt-4 {
+    margin-top: 1rem;
+  }
+  m-4 {
+    margin: 1rem;
+  }
+  .m-auto {
+    margin: auto
+  }
+</style>
+<body style="height: 200vh;">
+  <div class="container">
+    <div class="box m-auto mt-4">labas</div>
+    <button  class="btn" id="reference">reference</button>
+  </div>
+  <div data-popover data-show="false" class="popover">this is popover</div>
+  <div data-popover id="popover2" data-show="false" class="popover">this is popover 2</div>
+</body>
+<script>
+  const box = document.querySelector('.box')
+  const ref = document.querySelector('.btn')
+  const popElement = document.querySelector('[data-popover]')
+  const popElement2 = document.querySelector('#popover2')
+  // const write = initConsole()
+  addPopover(ref, popElement, {
+    placement: 'left',
+    middleware: [flip()]
+  })
+
+  addPopover(box, popElement2, {
+    placement:"top",
+    middleware: [offset({ x: 10, y: 10 }), flip()]
+  })
+
+
+  /**
+   * @returns {Middleware}
+  */
+  function offset ({ x = 0, y = 0 }) {
+    return {
+      name: 'offset',
+      fn: ({ x: cx, y: cy, placement }) => {
+        if (placement.startsWith('right')) {
+          cx += x
+        } else if (placement.startsWith('left')) {
+          cx -= x
+        } else if (placement.startsWith('top')) {
+          cy -= y
+        } else {
+          // bottom placement
+          cy += y
+        } 
+        return {
+          x: cx,
+          y: cy
+        }
+      }
+    }
+  }
+
+
+  /**
+   * @returns {Middleware}
+  */
+  function flip () {
+    return {
+      name: 'flip',
+      fn: ({ x, y, viewport }) => {
+        console.log(viewport)
+      }
+    }
+  }
+  /**
+   * @typedef {'left'|'left-start'|'left-end'|'top'|'top-start'|'top-end'|'bottom'|'bottom-start'|'bottom-end'|'right'|'right-start'|'right-end'} PlacementDirection
+  */
+
+  /**
+   * @typedef Middleware
+   * @prop {(options: { x: number, y: number, refElement: readonly DOMRect, floatingElement: readonly DOMRect, viewport: readonly { width: number, height: number }, placement: PlacementDirection }) => {x:number,y:number}} fn
+   * @prop {string} name
+  */
+
+  /**
+   * @typedef PopoverOptions
+   * @prop {PlacementDirection} placement
+   * @prop {Middleware[]} middleware
+  */
+
+  /**
+   * @param {HTMLElement} referenceElement
+   * @param {HTMLElement} popEl
+   * @param {PopoverOptions} options
+  */
+  function addPopover (referenceElement, popEl, options = {}) {
+    const { placement = 'right', middleware = [] } = options
+    const [ refRect, popRect ] = getClientRects(referenceElement, popEl)
+    const viewport = { width: window.innerWidth, height: window.innerHeight }
+    const { left: x, top: y } = getPlacement({ refRect, popRect, placement })
+
+    const legitMiddleware = middleware.filter(f => f.fn) || []
+
+    let state = {
+      placement: options.placement || 'right',
+      x,
+      y,
+      refRect,
+      popRect,
+      viewport
+    }
+    let tempState = structuredClone(state)
+    for (const middleware of legitMiddleware) {
+      const newState = middleware.fn(tempState)
+      tempState = { ...tempState, ...newState }
+    }
+    state = { ...state, ...tempState }
+    popEl.style.left = state.x + 'px'
+    popEl.style.top = state.y + 'px'
+    // write({ refRect, popRect })
+  }
+  /**
+   * @param {{ placement: PlacementDirection, popRect: DOMRect, refRect: DOMRect }}
+   * @returns {{x:number , y: number}}
+  */
+  function getPlacement ({ refRect, popRect, placement }) {
+    const horizontalStart = refRect.left
+    const horizontalEnd = refRect.left + refRect.width - popRect.width
+    const horizontalMid = refRect.x + refRect.width / 2 - popRect.width / 2
+    const verticalMid = refRect.y + refRect.height / 2 - popRect.height / 2
+    const verticalStart = refRect.top
+    const verticalEnd = refRect.top + refRect.height - popRect.height
+    const directions = {
+      // leftStart: () => ({ left: refRect.x - popRect.width, top: verticalStart }),
+      left: () => ({ left: refRect.x - popRect.width, top: verticalMid }),
+      // leftEnd: () => ({ left: refRect.x - popRect.width, top: verticalEnd }),
+      // rightStart: () => ({ left: refRect.x + refRect.width, top: verticalStart  }),
+      right: () => ({ left: refRect.x + refRect.width, top: verticalMid }),
+      // rightEnd: () => ({ left: refRect.x + refRect.width, top: verticalEnd }),
+      // topStart: () => ({ left: horizontalStart, top: refRect.top - popRect.height }),
+      top: () => ({ left: horizontalMid, top: refRect.top - popRect.height }),
+      // topEnd: () => ({ left: horizontalEnd, top: refRect.top - popRect.height }),
+      // bottomStart: () => ({ left: horizontalStart, top: refRect.top + refRect.height }),
+      // bottomEnd: () => ({left: horizontalEnd, top: refRect.top + refRect.height }),
+      bottom: () => ({ left: horizontalMid, top: refRect.top + refRect.height }),
+    }
+    const [side, alignment = null] = placement.split('-')
+    const isVertical = ['top', 'bottom'].includes(side)
+    let coords = directions[side]()
+    if (alignment) {
+      if (isVertical) {
+        const align = {
+          start: refRect.top,
+          end: refRect.top + refRect.height - popRect.height
+        }
+        coords[side].top = align[alignment]
+      } else {
+        
+      }
+    }
+
+    return directions[placement]()
+  }
+
+  /**
+   * @return Window
+  */
+  function getWindow(node) {
+    return node?.ownerDocument?.defaultView || window;
+  }
+
+  /**
+   * @param {HTMLElement[]} rects
+   * @returns {DOMRect[]}
+  */
+  function getClientRects(...rects){
+    return rects.map(r => r.getBoundingClientRect())
+  }
+  function initConsole () {
+    /** @type {HTMLElement} */
+    const consoleElement = document.createElement('pre')
+    consoleElement.className = 'console'
+    document.body.appendChild(consoleElement)
+    onDrag(consoleElement)
+    return (input) => {
+      consoleElement.innerHTML = typeof input === 'object' ? JSON.stringify(input, null, 4) : input 
+    }
+  }
+  /** @param {HTMLElement} el */
+  function onDrag(el) {
+    const { addListener, removeListeners } = useListeners(el)
+    
+    addListener('mousedown', (e) => {
+      el.style.cursor = 'grabbing'
+      let { left, top } = el.getBoundingClientRect()
+      startX = e.clientX
+      startY = e.clientY
+      // addListener('mousemove', onMouseMove)
+      const remove = addEvListener(document.body, 'mousemove', onMouseMove)
+      function onMouseMove(moveEvent) {
+        let xDiff = left + moveEvent.clientX - startX 
+        let yDiff = top + moveEvent.clientY - startY
+        el.style.transform = `translate(${xDiff}px, ${yDiff}px)`
+      }
+      
+      document.body.addEventListener('mouseup', () => {
+        el.style.userSelect = 'none'
+        el.style.cursor = 'grab'
+        remove()
+      }, { once: true })
+    })
+  }
+  /** @param {HTMLElement} element */
+  function useListeners (element) {
+    const listenerMap = {}
+    return {
+      /**
+       * @template {keyof HTMLElementEventMap} T
+       * @param {T} event 
+       * @param {HTMLElementEventMap[T]} handler
+       * @param {AddEventListenerOptions} params
+       * @returns {() => void} function to remove listener from element.
+       */
+      addListener: (event, handler, params = {}) => {
+        const removeFn = addEvListener(element, event, handler, params)
+        if (!listenerMap[event]) listenerMap[event] = []
+        listenerMap[event].push(removeFn)
+      },
+      removeListeners: (eventKey) => {
+        if (eventKey && eventKey in listenerMap) {
+          listenerMap[eventKey].forEach(removeFn => removeFn())
+        } else if (!eventKey) {
+          Object.keys(listenerMap).forEach(event => {
+            listenerMap[event].forEach(removeFn => removeFn())
+          })
+        }
+      }
+    }
+  }
+  /**
+   * @template {keyof HTMLElementEventMap} T
+   * @param {HTMLElement} el
+   * @param {T} event 
+   * @param {HTMLElementEventMap[T]} handler
+   * @param {AddEventListenerOptions} params
+   * @returns {() => void} function to remove listener from element.
+   */
+  function addEvListener(el, event, handler, options) {
+    el.addEventListener(event, handler, options)
+    return () => el.removeEventListener(event, handler)
+  }
+</script>
+</html>
