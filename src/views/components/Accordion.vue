@@ -1,10 +1,12 @@
 <template>
   <div>
-    <MAccordion>
+    <MAccordion.Item>
       <template #title> Accordion title </template>
       this is content
-    </MAccordion>
+    </MAccordion.Item>
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import MAccordion from '@/components/accordion'
+</script>

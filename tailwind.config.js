@@ -3,6 +3,25 @@ import plugin from 'tailwindcss/plugin'
 module.exports = {
   content: ['./index.html', './src/**/*.{js,ts,vue}'],
   theme: {
+    fontSize: mutateKeys(
+      {
+        9: ['.5625rem', '1rem'],
+        10: ['.625rem', '1rem'],
+        12: ['.75rem', '1rem'],
+        14: ['.875rem', '1.5rem'],
+        16: ['1rem', '1.5rem'],
+        18: ['1.125rem', '1.5rem'],
+        20: ['1.25rem', '2rem'],
+        24: ['1.5rem', '2rem'],
+        32: ['2rem', '2.5rem'],
+        40: ['2.5rem', '3rem'],
+        48: ['3rem', '3.5rem'],
+        56: ['3.5rem', '4rem'],
+        64: ['4rem', '4.5rem'],
+        72: ['4.5rem', '4.75rem'],
+      },
+      { suffix: '-ds' },
+    ),
     extend: {
       fontFamily: {
         sans: 'DM Sans',
@@ -84,4 +103,18 @@ module.exports = {
 
 function useOpacity(input) {
   return ({ opacityValue }) => `rgb(${input} / ${opacityValue ?? 1})`
+}
+
+function mutateKeys(inputObj, { prefix = '', suffix = '' }) {
+  return forEachEntry(inputObj, ([key]) => ({
+    key: `${prefix}${key}${suffix}`,
+  }))
+}
+
+function forEachEntry(inputObject, cb) {
+  return Object.entries(inputObject).reduce((sum, entry) => {
+    const { key = entry[0], value = entry[1] } = cb(entry)
+    sum[key] = value
+    return sum
+  }, {})
 }
