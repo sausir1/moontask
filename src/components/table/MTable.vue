@@ -1,25 +1,47 @@
 <template>
-  <table>
+  <table
+    class="text-left text-14-ds font-sans border-separate"
+    :class="rowGapClass"
+  >
     <thead>
       <tr>
-        <th v-for="(column, index) in columns" :key="index">
-          {{ column.title }}
+        <th
+          class="font-semibold"
+          v-for="(column, index) in columns"
+          :key="index"
+        >
+          <div :class="rowSizeClass" class="!py-0">
+            {{ column.title }}
+          </div>
         </th>
       </tr>
     </thead>
-    <tbody>
-      <tr v-for="row in data" :key="row">
-        <td v-for="column in columns" :key="column.prop">
-          {{ row[column.prop] }}
-        </td>
-      </tr>
+    <tbody class="text-ds-bulma" :class="{ 'ds-zebra-rows': isZebra }">
+      <MRow class="group/row" v-for="row in data" :key="row" tabindex="0">
+        <MCell
+          class="overflow-hidden relative"
+          :class="[rowRoundness, hasBorders && 'ds-with-border']"
+          v-for="column in columns"
+          :key="column.prop"
+        >
+          <!-- ifhas actions - group-hover/row:!bg-ds-heles -->
+          <div
+            class="ds-value-wrapper bg-ds-gohan transition-colors -mx-px"
+            :class="[rowSizeClass]"
+          >
+            {{ row[column.prop] }}
+          </div>
+        </MCell>
+      </MRow>
     </tbody>
   </table>
 </template>
 
 <script setup lang="ts">
-import { computed } from 'vue';
-const { rowSize = 'md' } = defineProps<Props>()
+import { computed } from 'vue'
+import MRow from './MRow.vue'
+import MCell from './MCell.vue'
+const props = defineProps<Props>()
 
 /**
  * UI
@@ -37,25 +59,6 @@ const { rowSize = 'md' } = defineProps<Props>()
  * sticky header
  */
 
-const columns: readonly TableColumn[] = [
-  {
-    title: 'Name',
-    prop: 'name',
-  },
-  {
-    title: 'Surname',
-    prop: 'last',
-  },
-  {
-    title: 'Status',
-    prop: 'status',
-  },
-  {
-    title: 'Gender',
-    prop: 'gender',
-  },
-] as const
-
 export interface TableColumn {
   title: string
   prop: string
@@ -63,17 +66,52 @@ export interface TableColumn {
   width?: string | number
 }
 
-type TableRowSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+export type TableRowSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 
 interface Props {
   columns: TableColumn[]
-  hasMinimap?: boolean
   rowSize?: TableRowSize
+  rowGap?: Exclude<TableRowSize, '2xl'>
   hasColumnResize?: boolean
-  data: any[],
+  hasBorders?: boolean
+  hasMinimap?: boolean
+  isZebra?: boolean
+  data: any[]
 }
 
+const rowGapClass = computed(() => {
+  const sizes: Record<Exclude<TableRowSize, '2xl'>, string> = {
+    xs: 'border-spacing-0',
+    sm: 'border-spacing-y-1',
+    md: 'border-spacing-y-2',
+    lg: 'border-spacing-y-3',
+    xl: 'border-spacing-y-4',
+  }
+  return sizes[props?.rowGap] || props.rowGap
+})
 const rowSizeClass = computed(() => {
-  this.
+  const sizes: Record<TableRowSize, string> = {
+    xs: 'py-1 px-2',
+    sm: 'py-1 px-3',
+    md: 'py-2 px-3',
+    lg: 'p-3',
+    xl: 'p-4',
+    '2xl': 'p-5',
+  }
+  return sizes[props.rowSize] || props.rowSize
+})
+const rowRoundness = computed(() => {
+  const rowSize = props.rowSize || 'md'
+  switch (rowSize) {
+    case 'xs':
+    case 'sm':
+    case 'md':
+      return 'ds-row-roundness-xs'
+    case 'lg':
+    case 'xl':
+    case '2xl':
+      return 'ds-row-roundness-sm'
+  }
 })
 </script>
+<style></style>

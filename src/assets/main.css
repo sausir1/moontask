@@ -35,3 +35,29 @@
   font-weight: 100 1000;
   font-style: italic;
 }
+
+@layer components {
+.ds-zebra-rows tr:nth-child(even) .ds-value-wrapper {
+    @apply bg-transparent;
+  }
+
+  .ds-row-roundness-xs {
+    @apply first:rounded-tl-ds-s-xs first:rounded-bl-ds-s-xs last:rounded-tr-ds-s-xs last:rounded-br-ds-s-xs;
+  }
+
+  .ds-row-roundness-sm {
+    @apply first:rounded-tl-ds-s-sm first:rounded-bl-ds-s-sm last:rounded-tr-ds-s-sm last:rounded-br-ds-s-sm;
+  }
+
+  .ds-with-border {
+    @apply relative;
+  }
+
+  .ds-with-border:not(:first-child)::after {
+    content: ' ';
+    position: absolute;
+    inset-block: 20%;
+    width: 1px;
+    background-color: theme(colors.ds.beerus);
+  }
+}
