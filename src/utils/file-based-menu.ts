@@ -24,8 +24,8 @@ export function generateMenu(rootPathName: string = 'Root') {
   return paths
 }
 
-export function generateGlobalComponents() {
-  const files = import.meta.glob('../components/**/*.vue', { eager: false })
+export function generateGlobalComponents(eager = false) {
+  const files = import.meta.glob('../components/**/*.vue', { eager })
   return objKeys(files).map((key) => ({
     name: key.split('/').at(-1)?.slice(0, -4) as string,
     definition: files[key],
