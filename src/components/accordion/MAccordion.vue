@@ -3,7 +3,7 @@
     class="accordion bg-ds-gohan rounded-ds-i-sm"
     :class="{ 'accordion-expanded': expanded }"
   >
-    <h3 class="flex gap-2" :class="headerClass">
+    <h3 class="flex" :class="headerClass">
       <slot name="leading"></slot>
       <button
         class="grow accordion-item-header text-left"
@@ -71,10 +71,10 @@ provide(accordionItem, {
 })
 
 const headerSize = {
-  sm: 'p-2 text-12-ds',
-  md: 'py-2 px-3 text-14-ds',
-  lg: 'p-3 text-14-ds',
-  xl: 'p-4 text-16-ds',
+  sm: 'p-2 text-12-ds gap-2',
+  md: 'py-2 px-3 text-14-ds gap-2',
+  lg: 'p-3 text-14-ds gap-3',
+  xl: 'p-4 text-16-ds gap-4',
 }
 const panelSize = {
   sm: 'p-2',
