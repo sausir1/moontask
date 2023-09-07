@@ -63,14 +63,14 @@ module.exports = {
           heles: 'rgba(var(--heles))',
           zeno: 'rgba(var(--zeno))',
           krillin: useOpacity('var(--krillin)'),
-          chichi: useOpacity('--var(--chichi)'),
-          roshi: useOpacity('--var(--roshi)'),
-          dodoria: useOpacity('--var(--dodoria)'),
-          cell: useOpacity('--var(--cell)'),
-          raditz: useOpacity('--var(--raditz)'),
-          whis: useOpacity('--var(--whis)'),
-          frieza: useOpacity('--var(--frieza)'),
-          nappa: useOpacity('--var(--nappa)'),
+          chichi: useOpacity('var(--chichi)'),
+          roshi: useOpacity('var(--roshi)'),
+          dodoria: useOpacity('var(--dodoria)'),
+          cell: useOpacity('var(--cell)'),
+          raditz: useOpacity('var(--raditz)'),
+          whis: useOpacity('var(--whis)'),
+          frieza: useOpacity('var(--frieza)'),
+          nappa: useOpacity('var(--nappa)'),
           'krillin-60': `rgba(var(--krillin-60))`,
           'krillin-10': `rgba(var(--krillin-10))`,
           'chichi-60': `rgba(var(--chichi-60))`,
@@ -97,6 +97,7 @@ module.exports = {
     plugin(({ addVariant }) => {
       addVariant('item-left', ['&[data-item-left="true"]'])
       addVariant('item-right', ['&[data-item-right="true"]'])
+      addVariant('aria-invalid', ['&[aria-invalid="true"]'])
     }),
   ],
 }
