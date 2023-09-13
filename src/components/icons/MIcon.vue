@@ -1,17 +1,18 @@
 <template>
-  <component :is="fixed[icon]"></component>
+  <component :is="iconComponent"></component>
 </template>
 
 <script setup lang="ts">
 import { type IconKeys } from '../Icons'
-import { defineAsyncComponent, type VNodeProps } from 'vue'
+import { computed, defineAsyncComponent, type VNodeProps } from 'vue'
+const props = defineProps<Props>()
 const icons = import.meta.glob(
   '../../../node_modules/@heroicons/vue/24/outline/*.js',
   {
     eager: false,
   },
 )
-const fixed: Record<IconKeys, () => Promise<IconKeys>> = Object.entries(
+const fixed: Record<IconKeys, () => Promise<unknown>> = Object.entries(
   icons,
 ).reduce((sum, [key, value]) => {
   key = key
@@ -23,5 +24,8 @@ const fixed: Record<IconKeys, () => Promise<IconKeys>> = Object.entries(
 interface Props extends VNodeProps {
   icon: IconKeys
 }
-defineProps<Props>()
+
+const iconComponent = computed(() => {
+  return fixed[props.icon]
+})
 </script>

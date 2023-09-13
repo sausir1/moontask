@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { RouterLink, RouterView } from 'vue-router'
-import IconLogo from './components/icons/IconLogo.vue'
 import { generateMenu } from './utils/file-based-menu'
 const routes = generateMenu()
 </script>
@@ -20,8 +18,26 @@ const routes = generateMenu()
             {{ route.name }}
           </RouterLink>
         </li>
+        <li>
+          <MMenuItem class="w-full">
+            <MMultiLine
+              title="testas"
+              text="cia nelabai svarbus tekstas kuris turetu overflowint"
+            ></MMultiLine>
+          </MMenuItem>
+          <MMenuItem disabled class="w-full">
+            <MMultiLine
+              title="testas"
+              text="cia nelabai svarbus tekstas kuris turetu overflowint"
+            ></MMultiLine>
+          </MMenuItem>
+          <MMenuItem disabled />
+        </li>
       </ul>
     </nav>
+    <!-- TODO HERE -->
+    <MIcon icon="AcademicCapIcon"></MIcon>
+    <!-- TODO HERE -->
     <div class="bg-ds-gohan col-start-2 row-span-1 border-b border-ds-beerus">
       This is header
     </div>

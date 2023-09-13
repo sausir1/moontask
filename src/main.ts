@@ -1,11 +1,6 @@
 import './assets/main.css'
 
-import {
-  createApp,
-  defineAsyncComponent,
-  defineComponent,
-  type DefineComponent,
-} from 'vue'
+import { createApp, defineAsyncComponent } from 'vue'
 import { createPinia } from 'pinia'
 import { generateGlobalComponents } from './utils/file-based-menu'
 
