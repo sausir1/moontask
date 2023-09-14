@@ -94,6 +94,7 @@ module.exports = {
     },
   },
   plugins: [
+    // require('@tailwindcss/forms'),
     plugin(({ addVariant }) => {
       addVariant('item-left', ['&[data-item-left="true"]'])
       addVariant('item-right', ['&[data-item-right="true"]'])

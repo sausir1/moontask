@@ -36,10 +36,10 @@ const routes = generateMenu()
       </ul>
     </nav>
     <!-- TODO HERE -->
-    <MIcon icon="AcademicCapIcon"></MIcon>
     <!-- TODO HERE -->
     <div class="bg-ds-gohan col-start-2 row-span-1 border-b border-ds-beerus">
       This is header
+      <MIcon icon="AcademicCap"></MIcon>
     </div>
     <div class="p-4">
       <RouterView />
