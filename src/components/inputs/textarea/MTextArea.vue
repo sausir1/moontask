@@ -21,6 +21,4 @@
 .m-input:focus {
   @apply outline-1 ring-4 ring-ds-piccolo/20 outline-ds-piccolo;
 }
-.m-input:active {
-}
 </style>

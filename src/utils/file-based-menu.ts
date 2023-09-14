@@ -1,5 +1,6 @@
 import { capitalizeAll } from './helpers'
 import { objKeys } from './object'
+import MarkdownParser from '@/layouts/MarkdownParser.vue'
 
 export function generateMenu(rootPathName: string = 'Root') {
   const files = import.meta.glob('../views/**/*.vue', { eager: false })
@@ -22,6 +23,30 @@ export function generateMenu(rootPathName: string = 'Root') {
       }
     })
   return paths
+}
+
+export function getMarkdownContents(rootPathName: string = 'Docs') {
+  const files = import.meta.glob('../components/**/*.md', {
+    eager: true,
+    as: 'raw',
+  })
+  return objKeys(files).map((filePath) => {
+    const url = filePath
+      .replace('../components', '/docs')
+      .replace('README', '')
+      .replace('.md', '')
+    const splitPath = url.split('/').filter(Boolean)
+    let name: string = rootPathName
+    if (splitPath.length > 0) {
+      name = splitPath.at(-1)!
+    }
+    return {
+      name: capitalizeAll(['docs', name]).join(' '),
+      path: url.toLowerCase(),
+      component: MarkdownParser,
+      props: { markdown: files[filePath] },
+    }
+  })
 }
 
 export function generateGlobalComponents() {
