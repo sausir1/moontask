@@ -1,7 +1,9 @@
 <template>
   <section
-    class="accordion bg-ds-gohan rounded-ds-i-sm"
-    :class="{ 'accordion-expanded': expanded }"
+    class="accordion bg-ds-gohan rounded-ds-i-sm overflow-hidden outline outline-none !outline-offset-0"
+    :class="{
+      'accordion-expanded !outline-ds-beerus !outline-1 ': expanded,
+    }"
   >
     <h3 class="flex" :class="headerClass">
       <slot name="leading"></slot>
@@ -101,7 +103,9 @@ const panelClass = computed(() => {
 .accordion {
   --content-height: 0fr;
   --ds-accordion-transition: 500ms;
-  transition: grid-template-rows var(--ds-accordion-transition);
+  transition:
+    grid-template-rows var(--ds-accordion-transition),
+    outline-color var(--ds-accordion-transition);
   display: grid;
   grid-template-rows: auto var(--content-height);
 }

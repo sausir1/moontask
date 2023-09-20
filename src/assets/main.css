@@ -4,7 +4,7 @@
 @tailwind utilities;
 @layer base {
   .ds-i-item {
-    @apply relative outline-none overflow-hidden transition-all duration-200 ease-in-out focus:ring-4;
+    @apply relative outline-none overflow-hidden transition-all duration-200 ease-in-out focus-visible:ring-4;
   }
   .ds-i-item::after {
     @apply transition-opacity duration-200 ease-in-out
