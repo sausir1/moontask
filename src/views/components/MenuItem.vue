@@ -10,7 +10,7 @@
       <h3 class="text-ds-trunks text-14-ds">menu item (with label right)</h3>
       <MMenuItem class="w-full">
         <MTitle>{{ menuText }}</MTitle>
-        <MTag class="bg-ds-gohan text-ds-popo">99</MTag>
+        <MTag class="bg-ds-gohan text-ds-bulma">99</MTag>
       </MMenuItem>
     </div>
     <div>
