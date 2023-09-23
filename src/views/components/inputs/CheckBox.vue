@@ -1,36 +1,50 @@
 <template>
   <div class="grid grid-cols-[repeat(auto-fill,minmax(14rem,1fr))] gap-4">
-    <MCheckbox checked-color="bg-ds-krillin" v-model="value"></MCheckbox>
-    <MCheckbox v-model="value" :readonly="true">Read only</MCheckbox>
-    <MCheckbox v-model="value" :disabled="true">Disabled</MCheckbox>
-    <MCheckbox v-model="value" indeterminate>indeterminate</MCheckbox>
+    <MCheckbox checked-color="bg-ds-krillin"></MCheckbox>
+    <MCheckbox :disabled="true">Disabled</MCheckbox>
+    <MCheckbox indeterminate>indeterminate</MCheckbox>
   </div>
+  <div>Selected values: {{ checked }}</div>
   <div class="my-12">
-    <h4 class="text-32-ds font-semibold">TEST</h4>
-    <MCheckbox :indeterminate="isIndetermined" v-model="allSelected"
-      >Select All</MCheckbox
+    <MCheckbox v-model="allChecked" :indeterminate="isIndeterminate">
+      Mr. Indeterminate</MCheckbox
     >
-    <MCheckbox v-model="selects[0]">Select 1</MCheckbox>
-    <MCheckbox v-model="selects[1]">Select 2</MCheckbox>
-    <MCheckbox v-model="selects[2]">Select 3</MCheckbox>
+    <MCheckbox
+      v-model="checked"
+      v-for="option in checkboxOptions"
+      :key="option.name"
+      :value="option"
+      id="test123"
+    >
+      Checkbox Option {{ option.name }}</MCheckbox
+    >
   </div>
 </template>
 
 <script setup lang="ts">
+import MCheckbox from '@/components/checkbox/MCheckbox.vue'
 import { computed, ref } from 'vue'
 
-const value = ref(false)
-const selects = ref([false, false, false])
-const isIndetermined = computed(() => {
-  return selects.value.includes(true) && selects.value.includes(false)
+type TestValue = { name: number }
+const checkboxOptions: TestValue[] = Array.from({ length: 6 }, (_, i) => ({
+  name: ++i,
+}))
+
+const checked = ref<TestValue[]>([])
+
+const isIndeterminate = computed(() => {
+  return (
+    checked.value.length > 0 && checked.value.length < checkboxOptions.length
+  )
 })
-const allSelected = computed({
+
+const allChecked = computed({
   get() {
-    return !selects.value.includes(false)
+    return checked.value.length === checkboxOptions.length
   },
-  set(v) {
-    if (v) selects.value.forEach((_, index) => (selects.value[index] = true))
-    else selects.value = selects.value.map((v) => false)
+  set(value) {
+    if (value) checked.value = checkboxOptions
+    else checked.value = []
   },
 })
 </script>
