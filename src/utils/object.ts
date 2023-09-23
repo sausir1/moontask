@@ -11,6 +11,14 @@ export function toEntries<T extends Record<string, unknown>, K extends keyof T>(
   return Object.entries(object) as [K, T[K]][]
 }
 
+export function stringify(obj: any) {
+  return JSON.stringify(obj)
+}
+
+export function objectEquals(obj1: any, obj2: any) {
+  return stringify(obj1) === stringify(obj2)
+}
+
 export function groupBy<T>(
   predicate: keyof T | ((item: T) => string | keyof T),
   array: T[],
