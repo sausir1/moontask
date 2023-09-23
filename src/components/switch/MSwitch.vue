@@ -7,14 +7,16 @@
     @click="checked = !checked"
   >
     <div
+      v-if="$slots['on-icon']"
       class="absolute left-[10%] switch-icon group-aria-checked/switch:opacity-100 opacity-0"
     >
-      <slot name="on-icon">a</slot>
+      <slot name="on-icon"></slot>
     </div>
     <div
+      v-if="$slots['off-icon']"
       class="absolute right-[10%] switch-icon group-aria-checked/switch:opacity-0 opacity-100"
     >
-      <slot name="off-icon">b</slot>
+      <slot name="off-icon"></slot>
     </div>
     <span
       class="knob rounded-full h-[calc(100%-8px)] transition-all left-1 group-aria-checked/switch:left-[calc(100%-4px)] duration-300 group-aria-checked/switch:-translate-x-full aspect-square bg-ds-goten inset-y-1 absolute group-aria-checked/switch:bg-white shadow-md"
